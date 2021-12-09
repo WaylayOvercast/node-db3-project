@@ -86,7 +86,7 @@ router.get('/:scheme_id/steps', checkSchemeId, (req, res, next) => {
   
   Schemes.findSteps(scheme_id)
     .then(steps => {
-      console.log(steps)
+      
       res.json(steps)
     })
     .catch(next)

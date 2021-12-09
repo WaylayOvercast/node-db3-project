@@ -151,22 +151,21 @@ async function findSteps(scheme_id) { // EXERCISE C
       .groupBy('st.step_number')
       .select('st.step_id as step_id', 'st.step_number as step_number', 'instructions', 'sc.scheme_name as scheme_name')
       .where('sc.scheme_id', scheme_id)
-       
-    
-     
-      
+
   return stepsData
 }
-/*
-data('schemes as sc')
-  .leftJoin('steps as st', 'sc.scheme_id', 'st.scheme_id')
-  .groupBy('st.step_number')
-  .select('sc.scheme_id as scheme_id', 'sc.scheme_name as scheme_name', 'st.step_id as step_id', 'st.step_number as step_number', 'instructions')
-  .where('sc.scheme_id',scheme_id)*/
-function add(scheme) { // EXERCISE D
+
+async function add(scheme) { // EXERCISE D
   /*
     1D- This function creates a new scheme and resolves to _the newly created scheme_.
   */
+ /*const schemeData = await data('schemes as sc')
+    .insert(scheme)
+    .then(([scheme_id]) => findById(scheme_id))
+    return schemeData
+    */
+    const [id] = await data('schemes').insert(scheme)
+    return findById(id)
 }
 
 function addStep(scheme_id, step) { // EXERCISE E
