@@ -12,7 +12,6 @@ async function checkSchemeId (req, res, next) {
   const id = req.params.scheme_id;
   const valid = await Scheme.findById(id)
   try{
-    console.log(valid)
     if(valid){
       next()
     }else{

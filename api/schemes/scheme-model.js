@@ -123,16 +123,9 @@ const schemeData = await data('schemes as sc')
     return null
   }
 }
-/*
-const result = await data('schemes as sc')
-    .leftJoin('steps as st','sc.scheme_id','st.scheme_id')
-    .groupBy('sc.scheme_id')
-    .select('scheme_name','sc.scheme_id')
-    .count('st.step_id as number_of_steps')
-    return result
-}*/
 
-function findSteps(scheme_id) { // EXERCISE C
+
+async function findSteps(scheme_id) { // EXERCISE C
   /*
     1C- Build a query in Knex that returns the following data.
     The steps should be sorted by step_number, and the array
@@ -153,8 +146,23 @@ function findSteps(scheme_id) { // EXERCISE C
         }
       ]
   */
+ const stepsData = await data('steps as st')
+      .leftJoin('schemes as sc','sc.scheme_id', 'st.scheme_id')
+      .groupBy('st.step_number')
+      .select('st.step_id as step_id', 'st.step_number as step_number', 'instructions', 'sc.scheme_name as scheme_name')
+      .where('sc.scheme_id', scheme_id)
+       
+    
+     
+      
+  return stepsData
 }
-
+/*
+data('schemes as sc')
+  .leftJoin('steps as st', 'sc.scheme_id', 'st.scheme_id')
+  .groupBy('st.step_number')
+  .select('sc.scheme_id as scheme_id', 'sc.scheme_name as scheme_name', 'st.step_id as step_id', 'st.step_number as step_number', 'instructions')
+  .where('sc.scheme_id',scheme_id)*/
 function add(scheme) { // EXERCISE D
   /*
     1D- This function creates a new scheme and resolves to _the newly created scheme_.
