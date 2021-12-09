@@ -10,9 +10,9 @@ const Scheme = require('./scheme-model');
 */
 async function checkSchemeId (req, res, next) {
   const id = req.params.scheme_id;
-  const valid = await Scheme.getById(id)
+  const valid = await Scheme.findById(id)
   try{
-    console.log(scheme)
+    console.log(valid)
     if(valid){
       next()
     }else{
@@ -36,7 +36,7 @@ async function checkSchemeId (req, res, next) {
 const validateScheme = (req, res, next) => {
   try{
     const toCheck = req.body;
-    if(!toCheck.name || toCheck.name.length < 1 || typeof toCheck !== 'string'){
+    if(!toCheck.name || toCheck.name.length < 1 || typeof toCheck.name !== 'string'){
       next(res.status(400).json({message: `invalid scheme_name`}))
     }else{
       next()
@@ -56,8 +56,21 @@ const validateScheme = (req, res, next) => {
     "message": "invalid step"
   }
 */
+
 const validateStep = (req, res, next) => {
   
+  try{
+    const toCheck = req.body
+    if(!toCheck.instructions || toCheck.instructions.length < 1 || typeof toCheck.instructions !== 'string'){
+      next(res.status(400).json({message: `invalid step`}))
+      
+    }else if (toCheck.step_number < 1){
+      next(res.status(400).json({message: `invalid step`}))
+
+    }
+  }catch(err){
+    next(res.status(500).json({message: `unknown server error ${err.message}`}))
+  }
 }
 
 module.exports = {
